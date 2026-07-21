@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hikes from past years</title>
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bark:#2b2a26; --moss:#4a5d3a; --lichen:#8a9a5b;
+    --paper:#f2efe6; --contour:#ddd7c6; --rust:#a4552e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--paper);
+    background-image:repeating-linear-gradient(0deg,transparent 0 38px,rgba(138,154,91,.08) 38px 39px);
+    color:var(--bark);font-family:Inter,system-ui,sans-serif;line-height:1.5;
+    padding:0 1.25rem 5rem;
+  }
+  .wrap{max-width:880px;margin:0 auto}
+  header{padding:4.5rem 0 2.25rem;border-bottom:2px solid var(--bark)}
+  .eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--moss);font-weight:600;margin-bottom:1.1rem}
+  h1{font-family:Bitter,Georgia,serif;font-weight:700;font-size:clamp(2.2rem,6vw,3.5rem);line-height:1.05;letter-spacing:-.02em}
+  h1 em{font-style:normal;color:var(--moss)}
+  .lede{margin-top:1rem;max-width:52ch;color:#55534c}
+  .tally{margin-top:1.75rem;display:flex;gap:2rem;flex-wrap:wrap;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:#6d6a61}
+  .tally b{font-family:Bitter,serif;font-size:1.5rem;display:block;color:var(--bark);letter-spacing:0}
+
+  .controls{margin:2rem 0 .5rem}
+  .controls input{width:100%;padding:.85rem 1rem;font:inherit;background:transparent;border:1px solid var(--contour);border-radius:2px;color:var(--bark)}
+  .controls input:focus{outline:2px solid var(--moss);outline-offset:1px;border-color:transparent}
+  .chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
+  .chip{font:inherit;font-size:.78rem;padding:.32rem .7rem;border:1px solid var(--contour);background:transparent;border-radius:100px;cursor:pointer;color:#55534c}
+  .chip[aria-pressed="true"]{background:var(--moss);border-color:var(--moss);color:var(--paper)}
+  .chip:focus-visible{outline:2px solid var(--moss);outline-offset:2px}
+  .count{font-size:.78rem;color:#6d6a61;margin-top:.7rem;min-height:1.2em}
+
+  .region{margin-top:2.75rem}
+  .region h2{font-family:Bitter,serif;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--moss);padding-bottom:.6rem;border-bottom:1px solid var(--contour);display:flex;justify-content:space-between}
+  .rcount{color:var(--lichen);font-weight:600}
+  .region ul{list-style:none}
+  .stop{display:flex;align-items:baseline;gap:1.25rem;flex-wrap:wrap;padding:1.15rem 0;border-bottom:1px solid var(--contour)}
+  .stop-body{flex:1 1 24rem}
+  .stop h3{font-family:Bitter,serif;font-size:1.06rem;font-weight:600;letter-spacing:-.01em}
+  .freq{font-family:Inter,sans-serif;font-size:.7rem;font-weight:600;color:var(--lichen);vertical-align:.15em;margin-left:.15rem}
+  .meet{display:block;margin-top:.28rem;font-size:.9rem;color:#55534c}
+  .pending{display:block;margin-top:.28rem;font-size:.9rem;color:#8d8a80;font-style:italic}
+  .vars{display:block;margin-top:.28rem;font-size:.78rem;color:#8d8a80}
+  .seasons{display:block;margin-top:.35rem;font-size:.7rem;letter-spacing:.08em;color:var(--lichen);text-transform:uppercase}
+  .is-pending h3{color:#6d6a61}
+  .map{font-size:.82rem;font-weight:500;color:var(--rust);text-decoration:none;border-bottom:1px solid transparent;white-space:nowrap;padding-bottom:1px;transition:border-color .15s}
+  .map:hover,.map:focus-visible{border-bottom-color:var(--rust)}
+  .region[hidden]{display:none}
+  footer{margin-top:3.5rem;font-size:.79rem;color:#6d6a61;max-width:60ch}
+  footer code{font-size:.95em;color:#55534c}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">San Mateo Hiking Group &middot; 2023&ndash;2026</p>
+    <h1>Hikes from <em>past years</em>.</h1>
+    <p class="lede">Merged from six published schedules, with park names normalized so the same place counts once however it was written on the day.</p>
+    <div class="tally">
+      <span><b>87</b>Trailheads</span>
+      <span><b>85</b>Meeting places on file</span>
+      <span><b>6</b>Schedules merged</span>
+    </div>
+  </header>
+
+  <div class="controls">
+    <label for="q" style="position:absolute;left:-9999px">Filter trailheads</label>
+    <input id="q" type="search" placeholder="Filter by park, meeting place, or old name &mdash; try &ldquo;Skyline&rdquo;" autocomplete="off">
+    <div class="chips" id="chips" role="group" aria-label="Filter by region"></div>
+    <p class="count" id="count" role="status"></p>
+  </div>
+
+      <section class="region" data-region="Peninsula">
+        <h2>Peninsula <span class="rcount">30</span></h2>
+        <ul>
+        <li class="stop" data-search="bedwell bayfront park bedwell park pklot, marsh rd, menlo park bedwell bay front park">
+          <div class="stop-body">
+            <h3>Bedwell Bayfront Park <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Bedwell Park PkLot, Marsh Rd, Menlo Park</span>
+            <span class="vars">Also listed as: Bedwell Bay Front Park</span>
+            <span class="seasons">26H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Bedwell%20Park%20PkLot%2C%20Marsh%20Rd%2C%20Menlo%20Park%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="coal creek osp skyline ridge pklot (as part of four preserves) coal creek osp">
+          <div class="stop-body">
+            <h3>Coal Creek OSP <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Skyline Ridge PkLot (as part of Four Preserves)</span>
+            <span class="vars">Also listed as: Coal Creek OSP</span>
+            <span class="seasons">26H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Skyline%20Ridge%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="coal mine ridge alpine rd at willowbrook rd, portola valley coal mine ridge osp">
+          <div class="stop-body">
+            <h3>Coal Mine Ridge <span class="freq" title="Scheduled in 5 of the 6 schedules reviewed">&times;5</span></h3>
+            <span class="meet">Alpine Rd at Willowbrook Rd, Portola Valley</span>
+            <span class="vars">Also listed as: Coal Mine Ridge OSP</span>
+            <span class="seasons">23H; 24H1; 24H2; 25H1; 26H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Alpine%20Rd%20at%20Willowbrook%20Rd%2C%20Portola%20Valley%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="edgewood co park education center, old stage rd; clarkia trailhead on canada rd edgewood preserve; edgewood">
+          <div class="stop-body">
+            <h3>Edgewood Co Park <span class="freq" title="Scheduled in 5 of the 6 schedules reviewed">&times;5</span></h3>
+            <span class="meet">Education Center, Old Stage Rd; Clarkia trailhead on Canada Rd</span>
+            <span class="vars">Also listed as: Edgewood Preserve; Edgewood</span>
+            <span class="seasons">23H; 24H1; 24H2; 25H1; 26H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Education%20Center%2C%20Old%20Stage%20Rd%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="el corte de madera creek osp skeggs point / main pklot near restrooms el corte de madera; el corte de madera sandstone loop">
+          <div class="stop-body">
+            <h3>El Corte de Madera Creek OSP <span class="freq" title="Scheduled in 7 of the 6 schedules reviewed">&times;7</span></h3>
+            <span class="meet">Skeggs Point / main PkLot near restrooms</span>
+            <span class="vars">Also listed as: El Corte de Madera; El Corte De Madera Sandstone Loop</span>
+            <span class="seasons">23H; 24H1; 24H2; 25H1; 25H2; 26H1; 26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Skeggs%20Point%20/%20main%20PkLot%20near%20restrooms%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="foothills nature preserve (palo alto) orchard glen picnic area foothills park; foothills co park; foothills osp">
+          <div class="stop-body">
+            <h3>Foothills Nature Preserve (Palo Alto) <span class="freq" title="Scheduled in 3 of the 6 schedules reviewed">&times;3</span></h3>
+            <span class="meet">Orchard Glen Picnic Area</span>
+            <span class="vars">Also listed as: Foothills Park; Foothills Co Park; Foothills OSP</span>
+            <span class="seasons">24H1; 24H2; 26H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Orchard%20Glen%20Picnic%20Area%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="four preserves osp loop skyline ridge osp pklot 4 osp-skyline/monte bello/coal cr/russian rdg; four preserves osp">
+          <div class="stop-body">
+            <h3>Four Preserves OSP loop <span class="freq" title="Scheduled in 2 of the 6 schedules reviewed">&times;2</span></h3>
+            <span class="meet">Skyline Ridge OSP PkLot</span>
+            <span class="vars">Also listed as: 4 OSP-Skyline/Monte Bello/Coal Cr/Russian Rdg; Four Preserves OSP</span>
+            <span class="seasons">25H1; 26H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Skyline%20Ridge%20OSP%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="hidden villa → black mountain osp hidden villa pklot, los altos hills black mountain from hidden villa; hidden villa / black mountain">
+          <div class="stop-body">
+            <h3>Hidden Villa → Black Mountain OSP <span class="freq" title="Scheduled in 4 of the 6 schedules reviewed">&times;4</span></h3>
+            <span class="meet">Hidden Villa PkLot, Los Altos Hills</span>
+            <span class="vars">Also listed as: Black Mountain from Hidden Villa; Hidden Villa / Black Mountain</span>
+            <span class="seasons">23H; 24H1; 25H1; 26H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Hidden%20Villa%20PkLot%2C%20Los%20Altos%20Hills%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="huddart co park zwierlein picnic area pklot huddart park; huddart toyon camp; huddart leaders choice">
+          <div class="stop-body">
+            <h3>Huddart Co Park <span class="freq" title="Scheduled in 5 of the 6 schedules reviewed">&times;5</span></h3>
+            <span class="meet">Zwierlein Picnic Area PkLot</span>
+            <span class="vars">Also listed as: Huddart Park; Huddart Toyon Camp; Huddart Leaders Choice</span>
+            <span class="seasons">23H; 24H1; 24H2; 26H1; 26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Zwierlein%20Picnic%20Area%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="la honda creek osp sears ranch rd pklot, la honda lower la honda creek osp">
+          <div class="stop-body">
+            <h3>La Honda Creek OSP <span class="freq" title="Scheduled in 2 of the 6 schedules reviewed">&times;2</span></h3>
+            <span class="meet">Sears Ranch Rd PkLot, La Honda</span>
+            <span class="vars">Also listed as: Lower La Honda Creek OSP</span>
+            <span class="seasons">23H; 25H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Sears%20Ranch%20Rd%20PkLot%2C%20La%20Honda%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="long ridge osp skyline ridge pklot; peters creek trailhead opposite grizzly flat saratoga gap / long ridge; pomponio&#x27;s cave long ridge; grizzly flat/long ridge">
+          <div class="stop-body">
+            <h3>Long Ridge OSP <span class="freq" title="Scheduled in 4 of the 6 schedules reviewed">&times;4</span></h3>
+            <span class="meet">Skyline Ridge PkLot; Peters Creek trailhead opposite Grizzly Flat</span>
+            <span class="vars">Also listed as: Saratoga Gap / Long Ridge; Pomponio&#x27;s Cave Long Ridge; Grizzly Flat/Long Ridge</span>
+            <span class="seasons">25H1; 25H2; 26H1; 26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Skyline%20Ridge%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="los trancos osp los trancos pklot los trancos/monte bello">
+          <div class="stop-body">
+            <h3>Los Trancos OSP <span class="freq" title="Scheduled in 2 of the 6 schedules reviewed">&times;2</span></h3>
+            <span class="meet">Los Trancos PkLot</span>
+            <span class="vars">Also listed as: Los Trancos/Monte Bello</span>
+            <span class="seasons">24H2; 26H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Los%20Trancos%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="monte bello osp monte bello main pklot, page mill rd monte bello to black mountain">
+          <div class="stop-body">
+            <h3>Monte Bello OSP <span class="freq" title="Scheduled in 3 of the 6 schedules reviewed">&times;3</span></h3>
+            <span class="meet">Monte Bello main PkLot, Page Mill Rd</span>
+            <span class="vars">Also listed as: Monte Bello to Black Mountain</span>
+            <span class="seasons">24H2; 25H1; 25H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Monte%20Bello%20main%20PkLot%2C%20Page%20Mill%20Rd%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="palo alto baylands baylands athletic center pklot, 1900 geng rd; byxbee park byxbee park and palo alto baylands; palo alto shoreline baylands">
+          <div class="stop-body">
+            <h3>Palo Alto Baylands <span class="freq" title="Scheduled in 2 of the 6 schedules reviewed">&times;2</span></h3>
+            <span class="meet">Baylands Athletic Center PkLot, 1900 Geng Rd; Byxbee Park</span>
+            <span class="vars">Also listed as: Byxbee Park and Palo Alto Baylands; Palo Alto Shoreline baylands</span>
+            <span class="seasons">23H; 25H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Baylands%20Athletic%20Center%20PkLot%2C%201900%20Geng%20Rd%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="peninsula watershed — southern skyline ridge trail trailhead entrance pklot off hwy 92 at skyline (annual permit required) new southern skyline ridge trail">
+          <div class="stop-body">
+            <h3>Peninsula Watershed — Southern Skyline Ridge Trail <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Trailhead entrance PkLot off Hwy 92 at Skyline (annual permit required)</span>
+            <span class="vars">Also listed as: New Southern Skyline Ridge Trail</span>
+            <span class="seasons">26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Trailhead%20entrance%20PkLot%20off%20Hwy%2092%20at%20Skyline%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="phleger estate (ggnra) zwierlein pklot, huddart co park phleger estate">
+          <div class="stop-body">
+            <h3>Phleger Estate (GGNRA) <span class="freq" title="Scheduled in 3 of the 6 schedules reviewed">&times;3</span></h3>
+            <span class="meet">Zwierlein PkLot, Huddart Co Park</span>
+            <span class="vars">Also listed as: Phleger Estate</span>
+            <span class="seasons">24H2; 25H2; 26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Zwierlein%20PkLot%2C%20Huddart%20Co%20Park%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="pulgas ridge osp pulgas ridge osp pklot pulgas osp; pulgas ridge">
+          <div class="stop-body">
+            <h3>Pulgas Ridge OSP <span class="freq" title="Scheduled in 3 of the 6 schedules reviewed">&times;3</span></h3>
+            <span class="meet">Pulgas Ridge OSP PkLot</span>
+            <span class="vars">Also listed as: Pulgas OSP; Pulgas Ridge</span>
+            <span class="seasons">24H1; 25H1; 26H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Pulgas%20Ridge%20OSP%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop is-pending" data-search="rancho san antonio osp (not listed — cancelled) rancho san antonio osp">
+          <div class="stop-body">
+            <h3>Rancho San Antonio OSP <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="pending">Meeting place not recorded</span>
+            <span class="vars">Also listed as: Rancho San Antonio OSP</span>
+            <span class="seasons">26H1</span>
+          </div>
+          
+        </li>
+        <li class="stop" data-search="redwood city historic walk san mateo county courthouse redwood city history hike">
+          <div class="stop-body">
+            <h3>Redwood City historic walk <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">San Mateo County Courthouse</span>
+            <span class="vars">Also listed as: Redwood City History Hike</span>
+            <span class="seasons">23H</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=San%20Mateo%20County%20Courthouse%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="redwood shores library pklot, marine pkwy and bridge pkwy redwood shores">
+          <div class="stop-body">
+            <h3>Redwood Shores <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Library PkLot, Marine Pkwy and Bridge Pkwy</span>
+            <span class="vars">Also listed as: Redwood Shores</span>
+            <span class="seasons">25H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Library%20PkLot%2C%20Marine%20Pkwy%20and%20Bridge%20Pkwy%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="russian ridge osp russian ridge pklot, 3901 alpine rd at skyline blvd russian ridge - ted norton rock">
+          <div class="stop-body">
+            <h3>Russian Ridge OSP <span class="freq" title="Scheduled in 3 of the 6 schedules reviewed">&times;3</span></h3>
+            <span class="meet">Russian Ridge PkLot, 3901 Alpine Rd at Skyline Blvd</span>
+            <span class="vars">Also listed as: Russian Ridge - Ted Norton Rock</span>
+            <span class="seasons">23H; 25H1; 25H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Russian%20Ridge%20PkLot%2C%203901%20Alpine%20Rd%20at%20Skyline%20Blvd%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="san bruno mountain sp san bruno mtn state &amp; co park pklot lower san bruno mountain loop; san bruno mtn top; san bruno mountain summit">
+          <div class="stop-body">
+            <h3>San Bruno Mountain SP <span class="freq" title="Scheduled in 5 of the 6 schedules reviewed">&times;5</span></h3>
+            <span class="meet">San Bruno Mtn State &amp; Co Park PkLot</span>
+            <span class="vars">Also listed as: Lower San Bruno Mountain Loop; San Bruno Mtn Top; San Bruno Mountain Summit</span>
+            <span class="seasons">24H1; 25H1; 25H2; 26H1; 26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=San%20Bruno%20Mtn%20State%20%26%20Co%20Park%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="san mateo bay trail / coyote point seal point dog park pklot, 3rd ave, san mateo; ryder park bay trail coyote point; sf bay trail &amp; coyote point">
+          <div class="stop-body">
+            <h3>San Mateo Bay Trail / Coyote Point <span class="freq" title="Scheduled in 2 of the 6 schedules reviewed">&times;2</span></h3>
+            <span class="meet">Seal Point Dog Park PkLot, 3rd Ave, San Mateo; Ryder Park</span>
+            <span class="vars">Also listed as: Bay Trail Coyote Point; SF Bay Trail &amp; Coyote Point</span>
+            <span class="seasons">24H2; 26H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Seal%20Point%20Dog%20Park%20PkLot%2C%203rd%20Ave%2C%20San%20Mateo%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="sawyer camp trail sawyer camp main entrance, south pklot sawyer camp">
+          <div class="stop-body">
+            <h3>Sawyer Camp Trail <span class="freq" title="Scheduled in 2 of the 6 schedules reviewed">&times;2</span></h3>
+            <span class="meet">Sawyer Camp main entrance, south PkLot</span>
+            <span class="vars">Also listed as: Sawyer Camp</span>
+            <span class="seasons">23H; 25H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Sawyer%20Camp%20main%20entrance%2C%20south%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="skyline ridge osp skyline ridge pklot; russian ridge pklot (alpine pond / horseshoe lake loop) skyline ridge horseshoe lake loop; skyline ridge alpine pond">
+          <div class="stop-body">
+            <h3>Skyline Ridge OSP <span class="freq" title="Scheduled in 3 of the 6 schedules reviewed">&times;3</span></h3>
+            <span class="meet">Skyline Ridge PkLot; Russian Ridge PkLot (Alpine Pond / Horseshoe Lake loop)</span>
+            <span class="vars">Also listed as: Skyline Ridge Horseshoe Lake Loop; Skyline Ridge Alpine Pond</span>
+            <span class="seasons">24H1; 25H1; 26H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Skyline%20Ridge%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="stanford campus / the dish el camino park, palo alto; stanford dish pklot, piers ln stanford art walk; stanford dish to tresidder; stanford university art hike">
+          <div class="stop-body">
+            <h3>Stanford campus / The Dish <span class="freq" title="Scheduled in 3 of the 6 schedules reviewed">&times;3</span></h3>
+            <span class="meet">El Camino Park, Palo Alto; Stanford Dish PkLot, Piers Ln</span>
+            <span class="vars">Also listed as: Stanford Art Walk; Stanford Dish to Tresidder; Stanford University Art Hike</span>
+            <span class="seasons">23H; 24H1; 25H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=El%20Camino%20Park%2C%20Palo%20Alto%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="sweeney ridge (ggnra) sneath lane trailhead, san bruno; skyline college lot c skyline to sweeney ridge; sweeney ridge ggnra">
+          <div class="stop-body">
+            <h3>Sweeney Ridge (GGNRA) <span class="freq" title="Scheduled in 4 of the 6 schedules reviewed">&times;4</span></h3>
+            <span class="meet">Sneath Lane trailhead, San Bruno; Skyline College Lot C</span>
+            <span class="vars">Also listed as: Skyline to Sweeney Ridge; Sweeney Ridge GGNRA</span>
+            <span class="seasons">23H; 24H1; 24H2; 26H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Sneath%20Lane%20trailhead%2C%20San%20Bruno%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="upper san andreas trail lunardi&#x27;s market, west san bruno ave upper san andreas trail">
+          <div class="stop-body">
+            <h3>Upper San Andreas Trail <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Lunardi&#x27;s Market, West San Bruno Ave</span>
+            <span class="vars">Also listed as: Upper San Andreas Trail</span>
+            <span class="seasons">25H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Lunardi%27s%20Market%2C%20West%20San%20Bruno%20Ave%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="windy hill osp alpine rd at willowbrook rd, portola valley; skyline entrance at razorback ridge windy hill razorback; windy hill hamms gulch; windy hill lost trail">
+          <div class="stop-body">
+            <h3>Windy Hill OSP <span class="freq" title="Scheduled in 5 of the 6 schedules reviewed">&times;5</span></h3>
+            <span class="meet">Alpine Rd at Willowbrook Rd, Portola Valley; Skyline entrance at Razorback Ridge</span>
+            <span class="vars">Also listed as: Windy Hill Razorback; Windy Hill Hamms Gulch; Windy Hill Lost Trail</span>
+            <span class="seasons">23H; 24H1; 25H1; 25H2; 26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Alpine%20Rd%20at%20Willowbrook%20Rd%2C%20Portola%20Valley%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="wunderlich co park wunderlich co park pklot, woodside rd wunderlich to hwy 35 loop; wunderlich to alice&#x27;s; skeggs pt to wunderlich">
+          <div class="stop-body">
+            <h3>Wunderlich Co Park <span class="freq" title="Scheduled in 6 of the 6 schedules reviewed">&times;6</span></h3>
+            <span class="meet">Wunderlich Co Park PkLot, Woodside Rd</span>
+            <span class="vars">Also listed as: Wunderlich to Hwy 35 Loop; Wunderlich to Alice&#x27;s; Skeggs Pt to Wunderlich</span>
+            <span class="seasons">23H; 24H1; 24H2; 25H1; 26H1; 26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Wunderlich%20Co%20Park%20PkLot%2C%20Woodside%20Rd%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        </ul>
+      </section>
+      <section class="region" data-region="Coastside">
+        <h2>Coastside <span class="rcount">18</span></h2>
+        <ul>
+        <li class="stop" data-search="ano nuevo state park ano nuevo parking lot / visitors center ano nuevo">
+          <div class="stop-body">
+            <h3>Ano Nuevo State Park <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Ano Nuevo parking lot / Visitors Center</span>
+            <span class="vars">Also listed as: Ano Nuevo</span>
+            <span class="seasons">23H</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Ano%20Nuevo%20parking%20lot%20/%20Visitors%20Center%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="butano sp butano sp entrance kiosk / pklot by restrooms, pescadero butano state park; butano sp canyon loop">
+          <div class="stop-body">
+            <h3>Butano SP <span class="freq" title="Scheduled in 3 of the 6 schedules reviewed">&times;3</span></h3>
+            <span class="meet">Butano SP entrance kiosk / PkLot by restrooms, Pescadero</span>
+            <span class="vars">Also listed as: Butano State Park; Butano SP Canyon Loop</span>
+            <span class="seasons">24H2; 26H1; 26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Butano%20SP%20entrance%20kiosk%20/%20PkLot%20by%20restrooms%2C%20Pescadero%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="costanoa / franklin loop cascade restaurant pklot, costanoa lodge, pescadero coastanoa / franklin loop">
+          <div class="stop-body">
+            <h3>Costanoa / Franklin Loop <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Cascade Restaurant PkLot, Costanoa Lodge, Pescadero</span>
+            <span class="vars">Also listed as: Coastanoa / Franklin Loop</span>
+            <span class="seasons">26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Cascade%20Restaurant%20PkLot%2C%20Costanoa%20Lodge%2C%20Pescadero%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="cowell-purisima coastal trail cowell purisima north pklot; south entrance at bob&#x27;s veg stand cowell / purisima; cowell-purisima south">
+          <div class="stop-body">
+            <h3>Cowell-Purisima Coastal Trail <span class="freq" title="Scheduled in 4 of the 6 schedules reviewed">&times;4</span></h3>
+            <span class="meet">Cowell Purisima north PkLot; south entrance at Bob&#x27;s Veg Stand</span>
+            <span class="vars">Also listed as: Cowell / Purisima; Cowell-Purisima South</span>
+            <span class="seasons">23H; 24H1; 24H2; 26H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Cowell%20Purisima%20north%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="fitzgerald marine reserve fitzgerald marine reserve pklot; cypress ave &amp; airport st, moss beach fitzgerald marine preserve; marine fitzgerald">
+          <div class="stop-body">
+            <h3>Fitzgerald Marine Reserve <span class="freq" title="Scheduled in 6 of the 6 schedules reviewed">&times;6</span></h3>
+            <span class="meet">Fitzgerald Marine Reserve PkLot; Cypress Ave &amp; Airport St, Moss Beach</span>
+            <span class="vars">Also listed as: Fitzgerald Marine Preserve; Marine Fitzgerald</span>
+            <span class="seasons">23H; 24H1; 24H2; 25H1; 26H1; 26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Fitzgerald%20Marine%20Reserve%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="gazos creek state beach gazos creek state beach pklot, off hwy 1 gazos creek">
+          <div class="stop-body">
+            <h3>Gazos Creek State Beach <span class="freq" title="Scheduled in 3 of the 6 schedules reviewed">&times;3</span></h3>
+            <span class="meet">Gazos Creek State Beach PkLot, off Hwy 1</span>
+            <span class="vars">Also listed as: Gazos Creek</span>
+            <span class="seasons">23H; 24H2; 25H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Gazos%20Creek%20State%20Beach%20PkLot%2C%20off%20Hwy%201%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="half moon bay bluff — north francis beach / francis st beach, kelly ave half moon bay bluff north">
+          <div class="stop-body">
+            <h3>Half Moon Bay Bluff — North <span class="freq" title="Scheduled in 5 of the 6 schedules reviewed">&times;5</span></h3>
+            <span class="meet">Francis Beach / Francis St Beach, Kelly Ave</span>
+            <span class="vars">Also listed as: Half Moon Bay Bluff North</span>
+            <span class="seasons">24H1; 24H2; 25H1; 26H1; 26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Francis%20Beach%20/%20Francis%20St%20Beach%2C%20Kelly%20Ave%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="half moon bay bluff — south smith field little league pklot, wavecrest; poplar beach pklot half moon bay bluff south; half moon bay trail south">
+          <div class="stop-body">
+            <h3>Half Moon Bay Bluff — South <span class="freq" title="Scheduled in 6 of the 6 schedules reviewed">&times;6</span></h3>
+            <span class="meet">Smith Field Little League PkLot, Wavecrest; Poplar Beach PkLot</span>
+            <span class="vars">Also listed as: Half Moon Bay Bluff South; Half Moon Bay Trail South</span>
+            <span class="seasons">23H; 24H1; 24H2; 25H1; 26H1; 26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Smith%20Field%20Little%20League%20PkLot%2C%20Wavecrest%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="memorial co park tan oak flat picnic area; hoffman creek trailhead memorial pk. pomponio canyon; memorial / sam mcdonald">
+          <div class="stop-body">
+            <h3>Memorial Co Park <span class="freq" title="Scheduled in 2 of the 6 schedules reviewed">&times;2</span></h3>
+            <span class="meet">Tan Oak Flat Picnic Area; Hoffman Creek trailhead</span>
+            <span class="vars">Also listed as: Memorial Pk. Pomponio Canyon; Memorial / Sam McDonald</span>
+            <span class="seasons">25H2; 26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Tan%20Oak%20Flat%20Picnic%20Area%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="montara mountain / mcnee ranch san pedro valley park, 600 oddstad blvd, pacifica montara mountain; montara lighthouse">
+          <div class="stop-body">
+            <h3>Montara Mountain / McNee Ranch <span class="freq" title="Scheduled in 2 of the 6 schedules reviewed">&times;2</span></h3>
+            <span class="meet">San Pedro Valley Park, 600 Oddstad Blvd, Pacifica</span>
+            <span class="vars">Also listed as: Montara Mountain; Montara Lighthouse</span>
+            <span class="seasons">24H2; 25H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=San%20Pedro%20Valley%20Park%2C%20600%20Oddstad%20Blvd%2C%20Pacifica%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="mori point (ggnra) sharp park golf course, 1 sharp park rd, pacifica mori pt; mori point super bloom; mori point to rockaway beach">
+          <div class="stop-body">
+            <h3>Mori Point (GGNRA) <span class="freq" title="Scheduled in 5 of the 6 schedules reviewed">&times;5</span></h3>
+            <span class="meet">Sharp Park Golf Course, 1 Sharp Park Rd, Pacifica</span>
+            <span class="vars">Also listed as: Mori Pt; Mori Point Super Bloom; Mori Point to Rockaway Beach</span>
+            <span class="seasons">23H; 24H1; 25H1; 26H1; 26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Sharp%20Park%20Golf%20Course%2C%201%20Sharp%20Park%20Rd%2C%20Pacifica%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop is-pending" data-search="pescadero marsh (not listed — cancelled) pescadero marsh">
+          <div class="stop-body">
+            <h3>Pescadero Marsh <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="pending">Meeting place not recorded</span>
+            <span class="vars">Also listed as: Pescadero Marsh</span>
+            <span class="seasons">26H1</span>
+          </div>
+          
+        </li>
+        <li class="stop" data-search="purisima creek redwoods osp higgins canyon rd &amp; purisima creek rd (lower); north ridge pklot on skyline purisima redwoods osp; purisima osp north ridge">
+          <div class="stop-body">
+            <h3>Purisima Creek Redwoods OSP <span class="freq" title="Scheduled in 5 of the 6 schedules reviewed">&times;5</span></h3>
+            <span class="meet">Higgins Canyon Rd &amp; Purisima Creek Rd (lower); North Ridge PkLot on Skyline</span>
+            <span class="vars">Also listed as: Purisima Redwoods OSP; Purisima OSP North Ridge</span>
+            <span class="seasons">23H; 24H1; 25H1; 25H2; 26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Higgins%20Canyon%20Rd%20%26%20Purisima%20Creek%20Rd%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="quarry park (el granada) quarry park pklot, 1195 columbus st, el granada quarry park half moon bay n.">
+          <div class="stop-body">
+            <h3>Quarry Park (El Granada) <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Quarry Park PkLot, 1195 Columbus St, El Granada</span>
+            <span class="vars">Also listed as: Quarry Park Half Moon Bay N.</span>
+            <span class="seasons">25H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Quarry%20Park%20PkLot%2C%201195%20Columbus%20St%2C%20El%20Granada%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="rancho corral tierra nearest address 1300 park st., montara rancho corral tierra">
+          <div class="stop-body">
+            <h3>Rancho Corral Tierra <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Nearest address 1300 Park St., Montara</span>
+            <span class="vars">Also listed as: Rancho Corral Tierra</span>
+            <span class="seasons">25H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Nearest%20address%201300%20Park%20St.%2C%20Montara%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="sam mcdonald co park sam mcdonald co park pklot sam mcdonald tarwater; sam mcdonald heritage grove">
+          <div class="stop-body">
+            <h3>Sam McDonald Co Park <span class="freq" title="Scheduled in 5 of the 6 schedules reviewed">&times;5</span></h3>
+            <span class="meet">Sam McDonald Co Park PkLot</span>
+            <span class="vars">Also listed as: Sam McDonald Tarwater; Sam McDonald Heritage Grove</span>
+            <span class="seasons">23H; 24H1; 24H2; 25H1; 25H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Sam%20McDonald%20Co%20Park%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="san gregorio state beach san gregorio state beach pklot san gregorio beach">
+          <div class="stop-body">
+            <h3>San Gregorio State Beach <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">San Gregorio State Beach PkLot</span>
+            <span class="vars">Also listed as: San Gregorio Beach</span>
+            <span class="seasons">24H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=San%20Gregorio%20State%20Beach%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="san pedro valley co park san pedro valley park visitors center, 600 oddstad blvd, pacifica san pedro park brooks falls loop; san pedro valley">
+          <div class="stop-body">
+            <h3>San Pedro Valley Co Park <span class="freq" title="Scheduled in 5 of the 6 schedules reviewed">&times;5</span></h3>
+            <span class="meet">San Pedro Valley Park Visitors Center, 600 Oddstad Blvd, Pacifica</span>
+            <span class="vars">Also listed as: San Pedro Park Brooks Falls Loop; San Pedro Valley</span>
+            <span class="seasons">23H; 24H1; 25H1; 26H1; 26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=San%20Pedro%20Valley%20Park%20Visitors%20Center%2C%20600%20Oddstad%20Blvd%2C%20Pacifica%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        </ul>
+      </section>
+      <section class="region" data-region="Santa Cruz Mtns">
+        <h2>Santa Cruz Mtns <span class="rcount">9</span></h2>
+        <ul>
+        <li class="stop" data-search="big basin redwoods sp big basin park hq, 21600 big basin hwy, boulder creek big basin redwood state park">
+          <div class="stop-body">
+            <h3>Big Basin Redwoods SP <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Big Basin Park HQ, 21600 Big Basin Hwy, Boulder Creek</span>
+            <span class="vars">Also listed as: Big Basin Redwood State Park</span>
+            <span class="seasons">25H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Big%20Basin%20Park%20HQ%2C%2021600%20Big%20Basin%20Hwy%2C%20Boulder%20Creek%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="castle rock sp castle rock sp main entrance pklot; summit rock pklot castle rock st park; castle rock north; castle rock / sanborn">
+          <div class="stop-body">
+            <h3>Castle Rock SP <span class="freq" title="Scheduled in 4 of the 6 schedules reviewed">&times;4</span></h3>
+            <span class="meet">Castle Rock SP main entrance PkLot; Summit Rock PkLot</span>
+            <span class="vars">Also listed as: Castle Rock St Park; Castle Rock North; Castle Rock / Sanborn</span>
+            <span class="seasons">23H; 25H2; 26H1; 26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Castle%20Rock%20SP%20main%20entrance%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="cotoni coast dairies monument 1 cement plant rd., davenport contoni coast dairies monument">
+          <div class="stop-body">
+            <h3>Cotoni Coast Dairies Monument <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">1 Cement Plant Rd., Davenport</span>
+            <span class="vars">Also listed as: Contoni Coast Dairies Monument</span>
+            <span class="seasons">25H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=1%20Cement%20Plant%20Rd.%2C%20Davenport%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="fall creek (henry cowell redwoods sp) fall creek redwoods pklot, felton empire rd fall creek redwoods; fall creek, henry cowell">
+          <div class="stop-body">
+            <h3>Fall Creek (Henry Cowell Redwoods SP) <span class="freq" title="Scheduled in 4 of the 6 schedules reviewed">&times;4</span></h3>
+            <span class="meet">Fall Creek Redwoods PkLot, Felton Empire Rd</span>
+            <span class="vars">Also listed as: Fall Creek Redwoods; Fall Creek, Henry Cowell</span>
+            <span class="seasons">23H; 25H1; 25H2; 26H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Fall%20Creek%20Redwoods%20PkLot%2C%20Felton%20Empire%20Rd%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="portola redwoods sp madrone picnic area pklot, 9000 portola sp rd portola st park peters creek; portola redwoods tarwater; shingle mill loop">
+          <div class="stop-body">
+            <h3>Portola Redwoods SP <span class="freq" title="Scheduled in 4 of the 6 schedules reviewed">&times;4</span></h3>
+            <span class="meet">Madrone Picnic Area PkLot, 9000 Portola SP Rd</span>
+            <span class="vars">Also listed as: Portola St Park Peters Creek; Portola Redwoods Tarwater; Shingle Mill Loop</span>
+            <span class="seasons">23H; 24H2; 25H2; 26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Madrone%20Picnic%20Area%20PkLot%2C%209000%20Portola%20SP%20Rd%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="san vicente redwoods san vicente main pklot, empire grade san vicente redwoods">
+          <div class="stop-body">
+            <h3>San Vicente Redwoods <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">San Vicente main PkLot, Empire Grade</span>
+            <span class="vars">Also listed as: San Vicente Redwoods</span>
+            <span class="seasons">23H</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=San%20Vicente%20main%20PkLot%2C%20Empire%20Grade%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="sanborn skyline co park sanborn park main pklot sanborn to john nicholas; sanborn skyline john nicholas trail; sanborn / skyline co park">
+          <div class="stop-body">
+            <h3>Sanborn Skyline Co Park <span class="freq" title="Scheduled in 5 of the 6 schedules reviewed">&times;5</span></h3>
+            <span class="meet">Sanborn Park main PkLot</span>
+            <span class="vars">Also listed as: Sanborn to John Nicholas; Sanborn Skyline John Nicholas Trail; Sanborn / Skyline Co Park</span>
+            <span class="seasons">23H; 24H1; 25H1; 26H1; 26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Sanborn%20Park%20main%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="saratoga gap saratoga gap vista point pklot, hwy 9 at hwy 35 saratoga gap / long ridge hickory oaks">
+          <div class="stop-body">
+            <h3>Saratoga Gap <span class="freq" title="Scheduled in 3 of the 6 schedules reviewed">&times;3</span></h3>
+            <span class="meet">Saratoga Gap Vista Point PkLot, Hwy 9 at Hwy 35</span>
+            <span class="vars">Also listed as: Saratoga Gap / Long Ridge Hickory Oaks</span>
+            <span class="seasons">25H1; 25H2; 26H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Saratoga%20Gap%20Vista%20Point%20PkLot%2C%20Hwy%209%20at%20Hwy%2035%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="saratoga quarry park saratoga quarry park, by the restrooms saratoga quarry park">
+          <div class="stop-body">
+            <h3>Saratoga Quarry Park <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Saratoga Quarry Park, by the restrooms</span>
+            <span class="vars">Also listed as: Saratoga Quarry Park</span>
+            <span class="seasons">24H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Saratoga%20Quarry%20Park%2C%20by%20the%20restrooms%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        </ul>
+      </section>
+      <section class="region" data-region="South Bay">
+        <h2>South Bay <span class="rcount">9</span></h2>
+        <ul>
+        <li class="stop" data-search="bear creek redwoods osp bear creek redwoods osp parking lot bear creek redwoods osp">
+          <div class="stop-body">
+            <h3>Bear Creek Redwoods OSP <span class="freq" title="Scheduled in 2 of the 6 schedules reviewed">&times;2</span></h3>
+            <span class="meet">Bear Creek Redwoods OSP parking lot</span>
+            <span class="vars">Also listed as: Bear Creek Redwoods OSP</span>
+            <span class="seasons">23H; 25H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Bear%20Creek%20Redwoods%20OSP%20parking%20lot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="calero co park / rancho san vicente rancho san vicente entrance pklot calero reservoir">
+          <div class="stop-body">
+            <h3>Calero Co Park / Rancho San Vicente <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Rancho San Vicente entrance PkLot</span>
+            <span class="vars">Also listed as: Calero Reservoir</span>
+            <span class="seasons">24H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Rancho%20San%20Vicente%20entrance%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="coyote lake harvey bear ranch co park mendoza ranch pklot coyote lake harvey bear ranch co pk">
+          <div class="stop-body">
+            <h3>Coyote Lake Harvey Bear Ranch Co Park <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Mendoza Ranch PkLot</span>
+            <span class="vars">Also listed as: Coyote Lake Harvey Bear Ranch Co Pk</span>
+            <span class="seasons">25H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Mendoza%20Ranch%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="coyote ridge osp (mayyan &#x27;ooyakma) 9611 malech rd, morgan hill mayyan &#x27;ooyakma coyote ridge osp">
+          <div class="stop-body">
+            <h3>Coyote Ridge OSP (Mayyan &#x27;Ooyakma) <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">9611 Malech Rd, Morgan Hill</span>
+            <span class="vars">Also listed as: Mayyan &#x27;Ooyakma Coyote Ridge OSP</span>
+            <span class="seasons">24H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=9611%20Malech%20Rd%2C%20Morgan%20Hill%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="coyote valley osp coyote valley osp, palm ave, morgan hill coyote valley osp">
+          <div class="stop-body">
+            <h3>Coyote Valley OSP <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Coyote Valley OSP, Palm Ave, Morgan Hill</span>
+            <span class="vars">Also listed as: Coyote Valley OSP</span>
+            <span class="seasons">25H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Coyote%20Valley%20OSP%2C%20Palm%20Ave%2C%20Morgan%20Hill%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="don edwards national wildlife refuge environmental education center, alviso don edwards nwr">
+          <div class="stop-body">
+            <h3>Don Edwards National Wildlife Refuge <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Environmental Education Center, Alviso</span>
+            <span class="vars">Also listed as: Don Edwards NWR</span>
+            <span class="seasons">24H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Environmental%20Education%20Center%2C%20Alviso%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="mt. umunhum / sierra azul osp bald mountain pklot / woods rd trailhead, mt umunhum rd mt umunhum; sierra azul osp">
+          <div class="stop-body">
+            <h3>Mt. Umunhum / Sierra Azul OSP <span class="freq" title="Scheduled in 3 of the 6 schedules reviewed">&times;3</span></h3>
+            <span class="meet">Bald Mountain PkLot / Woods Rd trailhead, Mt Umunhum Rd</span>
+            <span class="vars">Also listed as: Mt Umunhum; Sierra Azul OSP</span>
+            <span class="seasons">24H2; 25H2; 26H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Bald%20Mountain%20PkLot%20/%20Woods%20Rd%20trailhead%2C%20Mt%20Umunhum%20Rd%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="rancho canada del oro rancho canada del oro pklot rancho cañada del oro">
+          <div class="stop-body">
+            <h3>Rancho Canada del Oro <span class="freq" title="Scheduled in 3 of the 6 schedules reviewed">&times;3</span></h3>
+            <span class="meet">Rancho Canada del Oro PkLot</span>
+            <span class="vars">Also listed as: Rancho Cañada Del Oro</span>
+            <span class="seasons">24H1; 25H1; 26H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Rancho%20Canada%20del%20Oro%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="stevens creek co park / fremont older osp stevens creek co park, chestnut pklot stevens creek / fremont older osp">
+          <div class="stop-body">
+            <h3>Stevens Creek Co Park / Fremont Older OSP <span class="freq" title="Scheduled in 2 of the 6 schedules reviewed">&times;2</span></h3>
+            <span class="meet">Stevens Creek Co Park, Chestnut PkLot</span>
+            <span class="vars">Also listed as: Stevens Creek / Fremont Older OSP</span>
+            <span class="seasons">24H1; 25H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Stevens%20Creek%20Co%20Park%2C%20Chestnut%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        </ul>
+      </section>
+      <section class="region" data-region="San Francisco">
+        <h2>San Francisco <span class="rcount">8</span></h2>
+        <ul>
+        <li class="stop" data-search="golden gate park blue heron lake boathouse (formerly stow lake) golden gate park stow lake">
+          <div class="stop-body">
+            <h3>Golden Gate Park <span class="freq" title="Scheduled in 4 of the 6 schedules reviewed">&times;4</span></h3>
+            <span class="meet">Blue Heron Lake Boathouse (formerly Stow Lake)</span>
+            <span class="vars">Also listed as: Golden Gate Park Stow Lake</span>
+            <span class="seasons">23H; 24H1; 24H2; 25H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Blue%20Heron%20Lake%20Boathouse%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="land&#x27;s end (ggnra) land&#x27;s end overlook / visitor center pklot lands end trail; land&#x27;s end / china beach">
+          <div class="stop-body">
+            <h3>Land&#x27;s End (GGNRA) <span class="freq" title="Scheduled in 4 of the 6 schedules reviewed">&times;4</span></h3>
+            <span class="meet">Land&#x27;s End Overlook / Visitor Center PkLot</span>
+            <span class="vars">Also listed as: Lands End Trail; Land&#x27;s End / China Beach</span>
+            <span class="seasons">23H; 24H2; 25H2; 26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Land%27s%20End%20Overlook%20/%20Visitor%20Center%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="mt. sutro / ucsf greenbelt judah st and la playa st mt sutro osp, ucsf pk greenbelt, tank hill">
+          <div class="stop-body">
+            <h3>Mt. Sutro / UCSF Greenbelt <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Judah St and La Playa St</span>
+            <span class="vars">Also listed as: Mt Sutro OSP, UCSF Pk Greenbelt, Tank Hill</span>
+            <span class="seasons">25H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Judah%20St%20and%20La%20Playa%20St%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="presidio / crissy field / tunnel tops inspiration point overlook, the presidio; crissy field sf presidio/crissy field; presidio tunnel tops loop">
+          <div class="stop-body">
+            <h3>Presidio / Crissy Field / Tunnel Tops <span class="freq" title="Scheduled in 3 of the 6 schedules reviewed">&times;3</span></h3>
+            <span class="meet">Inspiration Point Overlook, the Presidio; Crissy Field</span>
+            <span class="vars">Also listed as: SF Presidio/Crissy Field; Presidio Tunnel Tops Loop</span>
+            <span class="seasons">25H2; 26H1; 26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Inspiration%20Point%20Overlook%2C%20the%20Presidio%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="presidio — lover&#x27;s lane presidio golf club pklot, sf lover&#x27;s lane sf">
+          <div class="stop-body">
+            <h3>Presidio — Lover&#x27;s Lane <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Presidio Golf Club PkLot, SF</span>
+            <span class="vars">Also listed as: Lover&#x27;s Lane SF</span>
+            <span class="seasons">24H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Presidio%20Golf%20Club%20PkLot%2C%20SF%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="san francisco crosstown / double cross bayshore caltrain station (segs 1-2); lands end visitor center (segs 3-5); ferry building (ne) sf crosstown segments 1&amp;2; sf cross town sections 3-4-5; sf double cross ne">
+          <div class="stop-body">
+            <h3>San Francisco Crosstown / Double Cross <span class="freq" title="Scheduled in 5 of the 6 schedules reviewed">&times;5</span></h3>
+            <span class="meet">Bayshore Caltrain Station (segs 1-2); Lands End Visitor Center (segs 3-5); Ferry Building (NE)</span>
+            <span class="vars">Also listed as: SF Crosstown segments 1&amp;2; SF Cross Town Sections 3-4-5; SF Double Cross NE</span>
+            <span class="seasons">23H; 24H1; 24H2; 25H1; 26H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Bayshore%20Caltrain%20Station%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="san francisco — barbary coast / christmas walk sf ferry building barbary coast sf christmas walk; sf christmas walk">
+          <div class="stop-body">
+            <h3>San Francisco — Barbary Coast / Christmas walk <span class="freq" title="Scheduled in 2 of the 6 schedules reviewed">&times;2</span></h3>
+            <span class="meet">SF Ferry Building</span>
+            <span class="vars">Also listed as: Barbary Coast SF Christmas Walk; SF Christmas Walk</span>
+            <span class="seasons">23H; 24H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=SF%20Ferry%20Building%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="san francisco — bay to breakers route ocean beach pklot on the great highway between fulton and lincoln bay to breakers">
+          <div class="stop-body">
+            <h3>San Francisco — Bay to Breakers route <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Ocean Beach PkLot on the Great Highway between Fulton and Lincoln</span>
+            <span class="vars">Also listed as: Bay to Breakers</span>
+            <span class="seasons">26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Ocean%20Beach%20PkLot%20on%20the%20Great%20Highway%20between%20Fulton%20and%20Lincoln%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        </ul>
+      </section>
+      <section class="region" data-region="Marin">
+        <h2>Marin <span class="rcount">6</span></h2>
+        <ul>
+        <li class="stop" data-search="angel island tiburon ferry dock angel island">
+          <div class="stop-body">
+            <h3>Angel Island <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Tiburon Ferry Dock</span>
+            <span class="vars">Also listed as: Angel Island</span>
+            <span class="seasons">25H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Tiburon%20Ferry%20Dock%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="marin headlands / golden gate bridge loop smith rd pklot, marin headlands; old visitor center pklot marin headlands loop; marin headlands to ggb">
+          <div class="stop-body">
+            <h3>Marin Headlands / Golden Gate Bridge loop <span class="freq" title="Scheduled in 3 of the 6 schedules reviewed">&times;3</span></h3>
+            <span class="meet">Smith Rd PkLot, Marin Headlands; old visitor center PkLot</span>
+            <span class="vars">Also listed as: Marin Headlands loop; Marin Headlands to GGB</span>
+            <span class="seasons">23H; 25H1; 26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Smith%20Rd%20PkLot%2C%20Marin%20Headlands%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="mt. tamalpais sp rock springs trailhead; pantoll trailhead; throckmorton ave, mill valley mt tam cataract falls; dipsea loop; upper mountain loop; bootjack to muir woods">
+          <div class="stop-body">
+            <h3>Mt. Tamalpais SP <span class="freq" title="Scheduled in 5 of the 6 schedules reviewed">&times;5</span></h3>
+            <span class="meet">Rock Springs trailhead; Pantoll trailhead; Throckmorton Ave, Mill Valley</span>
+            <span class="vars">Also listed as: Mt Tam Cataract Falls; Dipsea Loop; Upper Mountain Loop; Bootjack to Muir Woods</span>
+            <span class="seasons">23H; 24H1; 24H2; 25H1; 26H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Rock%20Springs%20trailhead%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="tennessee valley / muir beach tennessee valley rd pklot, mill valley tennessee valley loop; tennessee valley to muir beach">
+          <div class="stop-body">
+            <h3>Tennessee Valley / Muir Beach <span class="freq" title="Scheduled in 3 of the 6 schedules reviewed">&times;3</span></h3>
+            <span class="meet">Tennessee Valley Rd PkLot, Mill Valley</span>
+            <span class="vars">Also listed as: Tennessee Valley Loop; Tennessee Valley to Muir Beach</span>
+            <span class="seasons">24H1; 24H2; 26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Tennessee%20Valley%20Rd%20PkLot%2C%20Mill%20Valley%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="tiburon / belvedere blackie&#x27;s pasture, tiburon tiburon belvedere">
+          <div class="stop-body">
+            <h3>Tiburon / Belvedere <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Blackie&#x27;s Pasture, Tiburon</span>
+            <span class="vars">Also listed as: Tiburon Belvedere</span>
+            <span class="seasons">25H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Blackie%27s%20Pasture%2C%20Tiburon%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="wolfback ridge (ggnra) north end gg bridge, headlands pklot wolfback ridge sausalito; hawk hill to sausalito">
+          <div class="stop-body">
+            <h3>Wolfback Ridge (GGNRA) <span class="freq" title="Scheduled in 2 of the 6 schedules reviewed">&times;2</span></h3>
+            <span class="meet">North end GG Bridge, Headlands PkLot</span>
+            <span class="vars">Also listed as: Wolfback Ridge Sausalito; Hawk Hill to Sausalito</span>
+            <span class="seasons">23H; 24H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=North%20end%20GG%20Bridge%2C%20Headlands%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        </ul>
+      </section>
+      <section class="region" data-region="East Bay">
+        <h2>East Bay <span class="rcount">7</span></h2>
+        <ul>
+        <li class="stop" data-search="alameda (victorian architecture walk) caroline st &amp; santa clara ave, alameda alameda victorian architectural history">
+          <div class="stop-body">
+            <h3>Alameda (Victorian architecture walk) <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Caroline St &amp; Santa Clara Ave, Alameda</span>
+            <span class="vars">Also listed as: Alameda Victorian Architectural History</span>
+            <span class="seasons">24H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Caroline%20St%20%26%20Santa%20Clara%20Ave%2C%20Alameda%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="alameda creek / coyote hills alameda creek staging area, eastin dr alameda creek to coyote hills">
+          <div class="stop-body">
+            <h3>Alameda Creek / Coyote Hills <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Alameda Creek Staging Area, Eastin Dr</span>
+            <span class="vars">Also listed as: Alameda Creek to Coyote Hills</span>
+            <span class="seasons">24H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Alameda%20Creek%20Staging%20Area%2C%20Eastin%20Dr%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="coyote hills regional park coyote hills visitor center coyote hills">
+          <div class="stop-body">
+            <h3>Coyote Hills Regional Park <span class="freq" title="Scheduled in 2 of the 6 schedules reviewed">&times;2</span></h3>
+            <span class="meet">Coyote Hills Visitor Center</span>
+            <span class="vars">Also listed as: Coyote Hills</span>
+            <span class="seasons">24H1; 26H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Coyote%20Hills%20Visitor%20Center%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="ed r. levin co park ed r levin co park pklot ed r. levin co park">
+          <div class="stop-body">
+            <h3>Ed R. Levin Co Park <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Ed R Levin Co Park PkLot</span>
+            <span class="vars">Also listed as: Ed R. Levin Co Park</span>
+            <span class="seasons">24H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Ed%20R%20Levin%20Co%20Park%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="garin / dry creek pioneer regional park garin park main pklot, garin ave garin dry creek park; garin regional park">
+          <div class="stop-body">
+            <h3>Garin / Dry Creek Pioneer Regional Park <span class="freq" title="Scheduled in 2 of the 6 schedules reviewed">&times;2</span></h3>
+            <span class="meet">Garin Park main PkLot, Garin Ave</span>
+            <span class="vars">Also listed as: Garin Dry Creek Park; Garin Regional Park</span>
+            <span class="seasons">24H2; 25H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Garin%20Park%20main%20PkLot%2C%20Garin%20Ave%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="joseph d. grant co park main pklot off grant rd near the restrooms joseph grant co park">
+          <div class="stop-body">
+            <h3>Joseph D. Grant Co Park <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Main PkLot off Grant Rd near the restrooms</span>
+            <span class="vars">Also listed as: Joseph Grant Co Park</span>
+            <span class="seasons">26H2</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Main%20PkLot%20off%20Grant%20Rd%20near%20the%20restrooms%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        <li class="stop" data-search="vargas plateau regional park vargas plateau regional park pklot vargas plateau reg park">
+          <div class="stop-body">
+            <h3>Vargas Plateau Regional Park <span class="freq" title="Scheduled in 1 of the 6 schedules reviewed">&times;1</span></h3>
+            <span class="meet">Vargas Plateau Regional Park PkLot</span>
+            <span class="vars">Also listed as: Vargas Plateau Reg Park</span>
+            <span class="seasons">24H1</span>
+          </div>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Vargas%20Plateau%20Regional%20Park%20PkLot%2C%20California" target="_blank" rel="noopener">Maps &rarr;</a>
+        </li>
+        </ul>
+      </section>
+
+  <footer>
+    <p>Frequency (<code>&times;n</code>) counts how many of the six schedules include the park, not the total number of hikes. Season codes read year then half: <code>25H2</code> is July&ndash;December 2025.</p>
+    <p style="margin-top:.6rem">Map links open a Google Maps search, so broadly named entries land on the park rather than the exact lot. Confirm meeting places with the trip leader before heading out.</p>
+  </footer>
+</div>
+
+<script>
+  var q=document.getElementById('q'),count=document.getElementById('count'),chips=document.getElementById('chips'),
+      regions=Array.prototype.slice.call(document.querySelectorAll('.region')),
+      stops=Array.prototype.slice.call(document.querySelectorAll('.stop')),active='';
+  regions.forEach(function(r){
+    var b=document.createElement('button');
+    b.className='chip';b.type='button';b.textContent=r.dataset.region;
+    b.setAttribute('aria-pressed','false');
+    b.addEventListener('click',function(){
+      active = (active===r.dataset.region) ? '' : r.dataset.region;
+      Array.prototype.forEach.call(chips.children,function(c){
+        c.setAttribute('aria-pressed', c.textContent===active ? 'true':'false');
+      });
+      filter();
+    });
+    chips.appendChild(b);
+  });
+  function filter(){
+    var term=q.value.trim().toLowerCase(),shown=0;
+    stops.forEach(function(s){
+      var inRegion = !active || s.closest('.region').dataset.region===active;
+      var hit = inRegion && (!term || s.dataset.search.indexOf(term)>-1);
+      s.hidden=!hit; if(hit) shown++;
+    });
+    regions.forEach(function(r){
+      r.hidden = !r.querySelector('.stop:not([hidden])');
+    });
+    count.textContent = (term||active) ? shown+(shown===1?' trailhead':' trailheads')+' match' : '';
+  }
+  q.addEventListener('input',filter);
+</script>
+</body>
+</html>
