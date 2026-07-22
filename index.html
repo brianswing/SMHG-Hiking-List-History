@@ -15,18 +15,26 @@
     background:var(--paper);
     background-image:repeating-linear-gradient(0deg,transparent 0 38px,rgba(138,154,91,.08) 38px 39px);
     color:var(--bark);font-family:Inter,system-ui,sans-serif;line-height:1.5;
-    padding:0 1.25rem 5rem;
+    padding:0 0 5rem;
   }
-  .wrap{max-width:880px;margin:0 auto}
-  header{padding:4.5rem 0 2.25rem;border-bottom:2px solid var(--bark)}
-  .eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--moss);font-weight:600;margin-bottom:1.1rem}
-  h1{font-family:Bitter,Georgia,serif;font-weight:700;font-size:clamp(2.2rem,6vw,3.5rem);line-height:1.05;letter-spacing:-.02em}
-  h1 em{font-style:normal;color:var(--moss)}
-  .lede{margin-top:1rem;max-width:52ch;color:#55534c}
-  .tally{margin-top:1.75rem;display:flex;gap:2rem;flex-wrap:wrap;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:#6d6a61}
-  .tally b{font-family:Bitter,serif;font-size:1.5rem;display:block;color:var(--bark);letter-spacing:0}
+  .wrap{max-width:880px;margin:0 auto;padding:0 1.25rem}
+  .hero{
+    background-image:linear-gradient(180deg,rgba(20,26,16,.62) 0%,rgba(20,26,16,.78) 100%),url("hero.jpg");
+    background-size:cover;
+    background-position:center 42%;
+    border-bottom:2px solid var(--bark);
+  }
+  .hero-inner{max-width:880px;margin:0 auto;padding:5.5rem 1.25rem 3rem}
+  header{padding:0}
+  .eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:#c8d6a8;font-weight:600;margin-bottom:1.1rem}
+  h1{font-family:Bitter,Georgia,serif;font-weight:700;font-size:clamp(2.2rem,6vw,3.5rem);line-height:1.05;letter-spacing:-.02em;color:#f6f4ec;text-shadow:0 1px 24px rgba(0,0,0,.45)}
+  h1 em{font-style:normal;color:#b9cf8e}
+  .lede{margin-top:1rem;max-width:52ch;color:#e2e0d5}
+  .tally{margin-top:1.75rem;display:flex;gap:2rem;flex-wrap:wrap;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:#c3c6b6}
+  .tally b{font-family:Bitter,serif;font-size:1.5rem;display:block;color:#f6f4ec;letter-spacing:0}
+  @media (max-width:900px){.hero-inner{padding:3.5rem 1.25rem 2.25rem}}
 
-  .controls{margin:2rem 0 .5rem}
+  .controls{margin:2.5rem 0 .5rem}
   .controls input{width:100%;padding:.85rem 1rem;font:inherit;background:transparent;border:1px solid var(--contour);border-radius:2px;color:var(--bark)}
   .controls input:focus{outline:2px solid var(--moss);outline-offset:1px;border-color:transparent}
   .chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
@@ -57,8 +65,8 @@
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
+<header class="hero">
+  <div class="hero-inner">
     <p class="eyebrow">San Mateo Hiking Group &middot; 2023&ndash;2026</p>
     <h1>Hikes from <em>past years</em>.</h1>
     <p class="lede">Merged from six published schedules, with park names normalized so the same place counts once however it was written on the day.</p>
@@ -67,8 +75,10 @@
       <span><b>85</b>Meeting places on file</span>
       <span><b>6</b>Schedules merged</span>
     </div>
-  </header>
+  </div>
+</header>
 
+<div class="wrap">
   <div class="controls">
     <label for="q" style="position:absolute;left:-9999px">Filter trailheads</label>
     <input id="q" type="search" placeholder="Filter by park, meeting place, or old name &mdash; try &ldquo;Skyline&rdquo;" autocomplete="off">
